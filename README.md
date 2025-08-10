@@ -1,2 +1,7 @@
 # PartyBillCalculator
-PartyBillCalculator（PBC記賬）是一個由於DAE課程而製作的在線網頁，能幫不同的用戶，實現多設備網頁端記賬的功能。主要用於聚會、聚餐之後的計算賬單的計算，讓不同的人可以依照規則計算自己的消費。
+
+PartyBillCalculator（PBC 記賬）是一個由於 DAE 課程而製作的在線網頁，能幫不同的用戶，實現多設備網頁端記賬的功能。主要用於聚會、聚餐之後的計算賬單的計算，讓不同的人可以依照規則計算自己的消費。
+
+# 開發想法和計劃
+
+https://docs.google.com/document/d/1TcfiB6bPj6yEC7gdA4Rde8EKUaL8jw9e78dS4RXK4BY/edit?usp=sharing
