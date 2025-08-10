@@ -1,0 +1,2 @@
+# PartyBillCalculator
+Richer Bookkeeping是一個由於DAE課程而製作的在線網頁，能幫不同的用戶，實現多設備網頁端記賬的功能。
