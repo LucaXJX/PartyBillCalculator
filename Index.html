@@ -8,6 +8,10 @@
     <!-- 引入Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入Font Awesome -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
     <!-- 使用Tailwind中的顏色和字體 -->
     <script>
       tailwind.config = {
@@ -50,28 +54,22 @@
     </style>
   </head>
   <body class="font-sans text-dark bg-gray-50">
-    <!-- 頂部導航欄-->
+    <!-- 頂部導航欄 - 使用增強的漸變效果 -->
     <header
       id="navbar"
-      class="fixed w-full bg-white/95 shadow-sm z-50 transition-all duration-300"
+      class="fixed w-full bg-gradient-to-r from-primary/10 via-white to-secondary/10 shadow-sm z-50 transition-all duration-300"
     >
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 md:h-20">
           <!-- 網站標誌 -->
-          <div>
+          <div class="flex items-center">
             <a href="#" class="flex items-center space-x-2">
               <img
                 src="/img/icon499x499.png"
                 alt="PBC聚賬通標誌"
-                class="h-24 w-24"
+                class="h-12 w-12 md:h-16 md:w-16 object-contain"
               />
               <span class="text-xl font-bold text-primary">PBC聚賬通</span>
-            </a>
-          </div>
-          <div class="flex items-center">
-            <a href="#" class="flex items-center space-x-2">
-              <i class="fa fa-calculator text-primary text-2xl"></i>
-              <span class="text-xl font-bold text-primary"> </span>
             </a>
           </div>
 
@@ -110,6 +108,35 @@
             >
               <i class="fa fa-bars text-xl"></i>
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 移動端菜單 -->
+      <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+        <div class="container mx-auto px-4 py-3 space-y-3">
+          <a
+            href="#features"
+            class="block text-gray-600 hover:text-primary py-2 transition-colors"
+            >功能</a
+          >
+          <a
+            href="#testimonials"
+            class="block text-gray-600 hover:text-primary py-2 transition-colors"
+            >用戶評價</a
+          >
+          <a
+            href="#"
+            class="block text-gray-600 hover:text-primary py-2 transition-colors"
+            >幫助中心</a
+          >
+          <div class="flex space-x-4 pt-2">
+            <a
+              href="#"
+              class="text-gray-600 hover:text-primary transition-colors"
+              >登錄</a
+            >
+            <a href="#" class="btn-primary">立即註冊</a>
           </div>
         </div>
       </div>
