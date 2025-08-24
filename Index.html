@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
-    <meta name="Home" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,6 +11,13 @@
       rel="stylesheet"
     />
     <style>
+      @font-face {
+        font-family: "GenSen";
+        src: url("config/otf/TC/GenSenRounded2TC-L.otf") format("opentype"); /* 更新字體路徑 */
+        font-weight: normal;
+        font-style: normal;
+      }
+
       body,
       html {
         margin: 0;
@@ -39,7 +46,19 @@
         position: relative;
         text-align: center;
         z-index: 2;
-        color: white;
+        color: #ffffff;
+      }
+      .product-info {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+      }
+
+      .product-title,
+      .product-description {
+        font-family: "GenSen";
       }
 
       .product-title {
@@ -53,7 +72,7 @@
       }
 
       .login-button {
-        position: complete;
+        position: absolute;
         top: 20px;
         right: 20px;
         background-color: rgba(255, 255, 255, 0.5);
@@ -64,6 +83,7 @@
         font-size: 1em;
         color: #333;
         z-index: 3;
+        font-family: "Noto Sans HK"; /* 可以在這裡設置字體 */
       }
 
       .login-button:hover {
@@ -74,15 +94,13 @@
   <body>
     <div class="overlay"></div>
     <div class="content">
-      <h1 class="product-title" style="font-family: Noto Sans HK">PBC記賬</h1>
-      <p class="product-description" style="font-family: Noto Sans HK">
-        讓聚會的每個瞬間都無後顧之憂！我們的聚會賬單分攤助手幫助您輕鬆管理聚會費用，無論是分享美食還是慶祝特別時刻，您只需專注於享受與朋友的樂趣。我們提供靈活的分攤方式，從平均分攤到自定義計算，還能為您處理那些小額的尾款問題。每次聚會後，您都能獲得清晰的報告，讓支付變得簡單明瞭。立即註冊，體驗無縫的聚會管理，讓每次聚會都成為美好的回憶！
-      </p>
-      <button
-        class="login-button"
-        onclick="location.href='login.html'"
-        style="font-family: Noto Sans HK"
-      >
+      <div class="product-info">
+        <h1 class="product-title">PBC記賬</h1>
+        <p class="product-description">
+          讓聚會的每個瞬間都無後顧之憂！我們的聚會賬單分攤助手幫助您輕鬆管理聚會費用，無論是分享美食還是慶祝特別時刻，您只需專注於享受與朋友的樂趣。我們提供靈活的分攤方式，從平均分攤到自定義計算，還能為您處理那些小額的尾款問題。每次聚會後，您都能獲得清晰的報告，讓支付變得簡單明瞭。立即註冊，體驗無縫的聚會管理，讓每次聚會都成為美好的回憶！
+        </p>
+      </div>
+      <button class="login-button" onclick="location.href='login.html'">
         登錄
       </button>
     </div>
