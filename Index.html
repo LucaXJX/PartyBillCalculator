@@ -3,106 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&family=Noto+Sans+HK:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      @font-face {
-        font-family: "GenSen";
-        src: url("config/otf/TC/GenSenRounded2TC-L.otf") format("opentype"); /* 更新字體路徑 */
-        font-weight: normal;
-        font-style: normal;
-      }
+    <title>PBC聚賬通 - 輕鬆管理聚會賬單</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <!-- 使用Tailwind中的顏色和字體 -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#4F46E5", // 靛藍色
+              secondary: "#EC4899", // 粉紅色
+              accent: "#F59E0B", // 琥珀色
+              light: "#F3F4F6",
+              dark: "#1F2937",
+            },
+            fontFamily: {
+              sans: ["Inter", "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
 
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #ff7e5f, #feb47b);
-        position: relative;
-      }
-
-      .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        z-index: 1;
-      }
-
-      .content {
-        position: relative;
-        text-align: center;
-        z-index: 2;
-        color: #ffffff;
-      }
-      .product-info {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 10px;
-      }
-
-      .product-title,
-      .product-description {
-        font-family: "GenSen";
-      }
-
-      .product-title {
-        font-size: 3em;
-        margin: 0;
-      }
-
-      .product-description {
-        font-size: 1.5em;
-        margin: 10px 0;
-      }
-
-      .login-button {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background-color: rgba(255, 255, 255, 0.5);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1em;
-        color: #333;
-        z-index: 3;
-        font-family: "Noto Sans HK"; /* 可以在這裡設置字體 */
-      }
-
-      .login-button:hover {
-        background-color: rgba(255, 255, 255, 0.7);
+    <!-- 自定義系列工具類 -->
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+        .text-shadow {
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card-hover {
+          @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+        }
+        .btn-primary {
+          @apply bg-accent text-white font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg hover:bg-amber-600 transition-all duration-300 transform hover:-translate-y-0.5;
+        }
+        .btn-secondary {
+          @apply bg-white text-primary border border-primary font-semibold py-3 px-6 rounded-full shadow-sm hover:shadow-md hover:bg-primary/5 transition-all duration-300;
+        }
       }
     </style>
   </head>
-  <body>
-    <div class="overlay"></div>
-    <div class="content">
-      <div class="product-info">
-        <h1 class="product-title">PBC記賬</h1>
-        <p class="product-description">
-          讓聚會的每個瞬間都無後顧之憂！我們的聚會賬單分攤助手幫助您輕鬆管理聚會費用，無論是分享美食還是慶祝特別時刻，您只需專注於享受與朋友的樂趣。我們提供靈活的分攤方式，從平均分攤到自定義計算，還能為您處理那些小額的尾款問題。每次聚會後，您都能獲得清晰的報告，讓支付變得簡單明瞭。立即註冊，體驗無縫的聚會管理，讓每次聚會都成為美好的回憶！
-        </p>
+  <body class="font-sans text-dark bg-gray-50">
+    <!-- 頂部導航欄-->
+    <header
+      id="navbar"
+      class="fixed w-full bg-white/95 shadow-sm z-50 transition-all duration-300"
+    >
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16 md:h-20">
+          <!-- 網站標誌 -->
+          <div class="flex items-center">
+            <a href="#" class="flex items-center space-x-2">
+              <i class="fa fa-calculator text-primary text-2xl"></i>
+              <span class="text-xl font-bold text-primary">PBC聚賬通</span>
+            </a>
+          </div>
+
+          <!-- 導航鏈接 - 桌面版 -->
+          <nav class="hidden md:flex items-center space-x-8">
+            <a
+              href="#features"
+              class="text-gray-600 hover:text-primary transition-colors"
+              >功能</a
+            >
+            <a
+              href="#testimonials"
+              class="text-gray-600 hover:text-primary transition-colors"
+              >用戶評價</a
+            >
+            <a
+              href="#"
+              class="text-gray-600 hover:text-primary transition-colors"
+              >幫助中心</a
+            >
+          </nav>
+
+          <!-- 登錄/註冊 -->
+          <div class="flex items-center space-x-4">
+            <a
+              href="#"
+              class="hidden sm:inline-block text-gray-600 hover:text-primary transition-colors"
+              >登錄</a
+            >
+            <a href="#" class="btn-primary hidden sm:inline-block">立即註冊</a>
+
+            <!-- 移動端菜單按鈕 -->
+            <button
+              id="menu-toggle"
+              class="md:hidden text-gray-600 hover:text-primary"
+            >
+              <i class="fa fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
       </div>
-      <button class="login-button" onclick="location.href='login.html'">
-        登錄
-      </button>
-    </div>
+    </header>
   </body>
 </html>
