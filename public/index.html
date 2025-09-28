@@ -63,7 +63,7 @@
         <div class="flex justify-between items-center h-16 md:h-20">
           <!-- 網站標誌 -->
           <div class="flex items-center">
-            <a href="#" class="flex items-center space-x-2">
+            <a href="#top" id="top" class="flex items-center space-x-2">
               <img
                 src="/img/icon499x499.png"
                 alt="PBC聚賬通標誌"
@@ -145,6 +145,7 @@
     <main>
       <!-- 網頁端主畫面 -->
       <section
+        id="mainpage"
         class="pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-br from-primary/5 to-secondary/5"
       >
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -210,7 +211,7 @@
               </div>
               <h3 class="text-xl font-semibold mb-3">聚會創建</h3>
               <p class="text-gray-600">
-                一每一場開心的聚會為單位，記錄不用的人員，不同類型的消費。
+                以每一場開心的聚會為單位，記錄不同的人員與消費類型。
               </p>
             </div>
 
@@ -223,7 +224,7 @@
               </div>
               <h3 class="text-xl font-semibold mb-3">消費記錄</h3>
               <p class="text-gray-600">
-                輕鬆添加每一筆消費，支持多人參與，詳細記錄消費詳情，包括購物發票。
+                輕鬆添加每一筆消費，支持多人參與、詳細記錄，還可上傳發票照片。
               </p>
             </div>
 
@@ -415,9 +416,9 @@
       </section>
     </main>
     <!-- 底部資料 -->
-    <footer class="bg-dark text-white pt-16 pb-8">
+    <footer class="bg-dark text-white pt-12 pb-8">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           <!-- web info -->
           <div>
             <div class="flex items-center space-x-2 mb-6">
@@ -435,7 +436,7 @@
             <ul class="space-y-3">
               <li>
                 <a
-                  href="#public/index.html"
+                  href="#top"
                   class="text-gray-400 hover:text-white transition-colors"
                   >首頁</a
                 >
@@ -478,7 +479,7 @@
               </li>
               <li class="flex items-start">
                 <i class="fa fa-map-marker text-gray-400 mt-1 mr-3"></i>
-                <span class="text-gray-400"
+                <span class="text-gray-400 whitespace-normal"
                   >香港專業進修學校 應用教育文憑 智能科技應用及手機程式設計
                   專題研習
                 </span>
@@ -492,21 +493,21 @@
             <ul class="space-y-3">
               <li>
                 <a
-                  href="#"
+                  href="privacy-policy.html"
                   class="text-gray-400 hover:text-white transition-colors"
                   >個人資料私隱政策</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href="disclaimer.html"
                   class="text-gray-400 hover:text-white transition-colors"
                   >免責條例</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href="copyright.html"
                   class="text-gray-400 hover:text-white transition-colors"
                   >版權聲明</a
                 >
@@ -516,7 +517,7 @@
         </div>
 
         <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
-          <p>&copy; 2025 PBC聚賬通. 保留所有權利.</p>
+          <p>&copy; 2025 PBC聚賬通. 保留所有權利</p>
         </div>
       </div>
     </footer>
@@ -531,6 +532,14 @@
         } else {
           navbar.classList.remove("shadow-md");
           navbar.classList.add("shadow-sm");
+        }
+      });
+      // 頁面加載時檢查滾動位置
+      window.addEventListener("load", function () {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("shadow-md");
+          navbar.classList.remove("shadow-sm");
         }
       });
 
