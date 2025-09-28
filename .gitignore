@@ -3,6 +3,7 @@ img/设计记账软件 logo (2).png
 thumbs.db
 data*.txt
 node_modules
-dist
+dist/
 package-lock.json
 pnpm-lock.yaml
+data/
