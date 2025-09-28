@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/icon32x32.png" sizes="16x16" />
+    <title>版權聲明 - PBC聚賬通</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <!-- 使用Tailwind中的顏色和字體 -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#4F46E5", // 靛藍色
+              secondary: "#EC4899", // 粉紅色
+              accent: "#F59E0B", // 琥珀色
+              light: "#F3F4F6",
+              dark: "#1F2937",
+            },
+            fontFamily: {
+              sans: ["Inter", "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- 自定義系列工具類 -->
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+        .text-shadow {
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card-hover {
+          @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+        }
+        .btn-primary {
+          @apply bg-accent text-white font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg hover:bg-amber-600 transition-all duration-300 transform hover:-translate-y-0.5;
+        }
+        .btn-secondary {
+          @apply bg-white text-primary border border-primary font-semibold py-3 px-6 rounded-full shadow-sm hover:shadow-md hover:bg-primary/5 transition-all duration-300;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-sans text-dark bg-gray-50">
+    <!-- 頂部導航欄 -->
+    <header
+      id="navbar"
+      class="fixed w-full bg-gradient-to-r from-primary/10 via-white to-secondary/10 shadow-sm z-50 transition-all duration-300"
+    >
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16 md:h-20">
+          <!-- 網站標誌 -->
+          <div class="flex items-center">
+            <a
+              href="index.html"
+              id="top-logo"
+              class="flex items-center space-x-2"
+            >
+              <img
+                src="/img/icon499x499.png"
+                alt="PBC聚賬通標誌"
+                class="h-12 w-12 md:h-16 md:w-16 object-contain"
+              />
+              <span class="text-xl font-bold text-primary">PBC聚賬通</span>
+            </a>
+          </div>
+
+          <!-- 登錄/註冊 -->
+          <div class="flex items-center space-x-4">
+            <a
+              href="#"
+              class="hidden sm:inline-block text-gray-600 hover:text-primary transition-colors"
+              >登錄</a
+            >
+            <a href="#" class="btn-primary hidden sm:inline-block">立即註冊</a>
+
+            <!-- 移動端菜單按鈕 -->
+            <button
+              id="menu-toggle"
+              class="md:hidden text-gray-600 hover:text-primary"
+            >
+              <i class="fa fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 移动端菜单 -->
+      <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+        <div class="container mx-auto px-4 py-3 space-y-3">
+          <div class="flex space-x-4 pt-2">
+            <a
+              href="#"
+              class="text-gray-600 hover:text-primary transition-colors"
+              >登錄</a
+            >
+            <a href="#" class="btn-primary">立即註冊</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主要內容 -->
+    <main class="pt-32 pb-20">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-8 md:p-10"
+        >
+          <!-- 頁面標題 -->
+          <h1
+            class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center text-primary mb-8"
+          >
+            版權聲明
+          </h1>
+
+          <!-- 內容部分 -->
+          <div class="prose max-w-none">
+            <!-- 一、自有版權說明 -->
+            <h2 class="text-xl font-semibold text-dark mt-8 mb-4">
+              一、網站自有內容版權
+            </h2>
+            <p class="text-gray-600 mb-4">
+              本網站（PBC聚賬通，網址：[請填入網站域名]）內所有標識、文字、圖片、圖標、版面設計、功能架構及服務內容（包括但不限於「功能展示」「用戶評價」等專區內容）的知識產權均歸PBC聚賬通所有。
+            </p>
+            <p class="text-gray-600 mb-6">
+              未經PBC聚賬通書面許可，任何單位或個人不得以任何方式複製、傳播、展示、修改、翻譯、摘編本網站內容，或用於商業用途。非商業用途的合理使用（如個人學習參考）需保留完整版權標識，並不得修改內容原意。
+            </p>
+
+            <!-- 二、第三方圖片聲明 -->
+            <h2 class="text-xl font-semibold text-dark mt-8 mb-4">
+              二、第三方圖片使用說明
+            </h2>
+            <p class="text-gray-600 mb-6">
+              本網站中用於演示的隨機圖片（來源於picsum.photos）僅用於開發測試及展示效果，其版權歸原圖片作者所有。正式上線後，相關圖片將替換為PBC聚賬通自有版權圖片或獲得授權的商用圖片。如原圖作者認為存在版權侵權，可隨時聯絡我們處理。
+            </p>
+
+            <!-- 三、第三方庫及工具引用聲明 -->
+            <h2 class="text-xl font-semibold text-dark mt-8 mb-4">
+              三、第三方庫與工具使用聲明
+            </h2>
+            <p class="text-gray-600 mb-4">
+              本網站開發過程中引用了以下開源第三方庫及工具，相關版權歸其原始開發者或機構所有，使用均遵循對應開源許可協議：
+            </p>
+
+            <!-- 第三方庫表格 -->
+            <div class="overflow-x-auto mb-6">
+              <table
+                class="w-full border-collapse bg-light rounded-lg overflow-hidden"
+              >
+                <thead class="bg-primary/10">
+                  <tr>
+                    <th
+                      class="py-3 px-4 text-left text-primary font-semibold border-b"
+                    >
+                      庫名稱
+                    </th>
+                    <th
+                      class="py-3 px-4 text-left text-primary font-semibold border-b"
+                    >
+                      用途
+                    </th>
+                    <th
+                      class="py-3 px-4 text-left text-primary font-semibold border-b"
+                    >
+                      許可協議
+                    </th>
+                    <th
+                      class="py-3 px-4 text-left text-primary font-semibold border-b"
+                    >
+                      官方鏈接
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-600">
+                  <tr>
+                    <td class="py-3 px-4 border-b">Tailwind CSS</td>
+                    <td class="py-3 px-4 border-b">頁面樣式與響應式布局</td>
+                    <td class="py-3 px-4 border-b">MIT License</td>
+                    <td class="py-3 px-4 border-b">
+                      <a
+                        href="https://tailwindcss.com"
+                        target="_blank"
+                        class="text-primary hover:underline"
+                        >https://tailwindcss.com</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 px-4 border-b">Font Awesome 4.7.0</td>
+                    <td class="py-3 px-4 border-b">
+                      圖標展示（如按鈕、導航圖標）
+                    </td>
+                    <td class="py-3 px-4 border-b">MIT License</td>
+                    <td class="py-3 px-4 border-b">
+                      <a
+                        href="https://fontawesome.com/v4.7/"
+                        target="_blank"
+                        class="text-primary hover:underline"
+                        >https://fontawesome.com/v4.7/</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 px-4">picsum.photos</td>
+                    <td class="py-3 px-4">開發階段演示圖片提供</td>
+                    <td class="py-3 px-4">MIT License</td>
+                    <td class="py-3 px-4">
+                      <a
+                        href="https://picsum.photos/"
+                        target="_blank"
+                        class="text-primary hover:underline"
+                        >https://picsum.photos/</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="text-gray-600 mb-6">
+              上述第三方庫的使用均符合其開源許可協議要求，PBC聚賬通不對第三方庫的完整性、安全性及兼容性提供保證，如有相關問題請聯繫對應庫的官方支持渠道。
+            </p>
+
+            <!-- 四、版權投訴與處理 -->
+            <h2 class="text-xl font-semibold text-dark mt-8 mb-4">
+              四、版權投訴與聯絡
+            </h2>
+            <p class="text-gray-600 mb-4">
+              如您認為本網站內容侵犯了您的知識產權或其他合法權益，請提供以下資料聯絡我們：
+            </p>
+            <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
+              <li>權利證明文件（如版權登記證書、授權證明等）；</li>
+              <li>涉嫌侵權內容的具體位置（頁面URL及截圖）；</li>
+              <li>您的聯絡方式（姓名、電話、電郵）。</li>
+            </ul>
+
+            <!-- 聯絡資訊卡片 -->
+            <div class="bg-primary/5 rounded-xl p-6 mt-8">
+              <h3 class="text-lg font-semibold text-primary mb-4">
+                版權投訴聯絡
+              </h3>
+              <div class="space-y-4">
+                <div class="flex items-center">
+                  <i class="fa fa-envelope-o text-primary mr-3"></i>
+                  <span class="text-gray-600">support@pbcapp.com</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fa fa-phone text-primary mr-3"></i>
+                  <span class="text-gray-600">852-1234-5678</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="bg-dark text-white pt-12 pb-8">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <!-- web info -->
+          <div>
+            <div class="flex items-center space-x-2 mb-4">
+              <i class="fa fa-calculator text-primary text-2xl"></i>
+              <span class="text-xl font-bold">PBC聚賬通</span>
+            </div>
+            <p class="text-gray-400 mb-4">
+              讓聚會帳單分攤變得簡單公平，提升社交體驗的必備工具。
+            </p>
+          </div>
+
+          <!-- 快速連結 -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">快速連結</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="index.html"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >首頁</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- 法律信息 -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">法律信息</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="privacy-policy.html"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >個人資料私隱政策</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >免責條例</a
+                >
+              </li>
+              <li>
+                <a
+                  href="copyright.html"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >版權聲明</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- 聯絡我們 -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">聯絡我們</h4>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fa fa-envelope-o text-gray-400 mt-1 mr-3"></i>
+                <span class="text-gray-400">nobodyevercare@icloud.com</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fa fa-phone text-gray-400 mt-1 mr-3"></i>
+                <span class="text-gray-400">852-1234-5678</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-6 text-center text-gray-500">
+          <p>&copy; 2025 PBC聚賬通. 保留所有權利</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+      // 1. 顶部Logo点击：直接刷新并回到顶部
+      document
+        .getElementById("logo-link")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          window.location.reload();
+        });
+
+      // 2. 導航欄滾動效果
+      window.addEventListener("scroll", function () {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("shadow-md");
+          navbar.classList.remove("shadow-sm");
+        } else {
+          navbar.classList.remove("shadow-md");
+          navbar.classList.add("shadow-sm");
+        }
+      });
+
+      // 3. 頁面加載時檢查滾動位置
+      window.addEventListener("load", function () {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("shadow-md");
+          navbar.classList.remove("shadow-sm");
+        }
+      });
+
+      // 4. 移動端菜單切換
+      document
+        .getElementById("menu-toggle")
+        .addEventListener("click", function () {
+          const mobileMenu = document.getElementById("mobile-menu");
+          mobileMenu.classList.toggle("hidden");
+        });
+
+      // 5. 平滑滾動效果（排除Logo链接）
+      document
+        .querySelectorAll('a[href^="#"]:not(#logo-link)')
+        .forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: "smooth",
+              });
+
+              // 關閉移動端菜單（如果打開的話）
+              document.getElementById("mobile-menu").classList.add("hidden");
+            }
+          });
+        });
+    </script>
+  </body>
+</html>
