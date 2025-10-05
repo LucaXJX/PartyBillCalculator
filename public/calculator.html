@@ -7,14 +7,6 @@
     <!-- Ionic CDN -->
     <script
       type="module"
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-    ></script>
-    <script
-      type="module"
       src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
     ></script>
     <script
@@ -25,7 +17,6 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
     />
-
     <!-- Font Awesome CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
@@ -38,6 +29,19 @@
       .fa {
         vertical-align: middle;
       }
+      ion-item ion-label {
+        white-space: normal;
+        width: 100%;
+        word-break: break-all;
+      }
+      ion-datetime {
+        min-width: 0;
+        width: 100%;
+        flex: 1 1 0%;
+      }
+      ion-item[lines="none"] {
+        align-items: center;
+      }
     </style>
   </head>
   <body>
@@ -45,9 +49,6 @@
       <!-- 頂部導航 -->
       <ion-header>
         <ion-toolbar color="primary">
-          <ion-buttons slot="start">
-            <ion-back-button defaultHref="/index.html"></ion-back-button>
-          </ion-buttons>
           <ion-title>
             <img
               src="/img/icon32x32.png"
@@ -76,33 +77,21 @@
               <ion-label position="stacked">聚會名稱</ion-label>
               <ion-input
                 id="bill-name"
-                placeholder="例如：週末聚餐、公司下午茶"
+                placeholder="例如：週末聚餐"
               ></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">日期</ion-label>
-              <ion-item lines="none">
-                <ion-datetime
-                  id="bill-date"
-                  presentation="date"
-                  display-format="YYYY-MM-DD"
-                  value=""
-                ></ion-datetime>
-                <ion-button
-                  size="small"
-                  fill="outline"
-                  style="margin-left: 8px"
-                  onclick="document.getElementById('bill-date').value = new Date().toISOString().slice(0,10);"
-                >
-                  今天
-                </ion-button>
-              </ion-item>
+              <ion-datetime
+                id="bill-date"
+                display-format="YYYY-MM-DD"
+              ></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">地點</ion-label>
               <ion-input
                 id="bill-location"
-                placeholder="例如：麥當勞、鼎泰豐"
+                placeholder="例如：鼎泰豐"
               ></ion-input>
             </ion-item>
             <ion-item>
@@ -176,29 +165,6 @@
               <ion-card-content>
                 <!-- 結果內容區域 -->
                 <div id="result-content"></div>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col>
-                      <ion-button expand="block" fill="outline">
-                        <i class="fa fa-print"></i> 列印報告
-                      </ion-button>
-                    </ion-col>
-                    <ion-col>
-                      <ion-button expand="block" fill="outline">
-                        <i class="fa fa-share-alt"></i> 分享結果
-                      </ion-button>
-                    </ion-col>
-                    <ion-col>
-                      <ion-button
-                        id="save-result-btn"
-                        expand="block"
-                        color="primary"
-                      >
-                        <i class="fa fa-save"></i> 保存賬單
-                      </ion-button>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
               </ion-card-content>
             </ion-card>
           </ion-content>
@@ -214,6 +180,169 @@
       </ion-footer>
     </ion-app>
 
-    <script></script>
+    <script type="module">
+      // 動態添加參與者
+      const participantsContainer = document.getElementById(
+        "participants-container"
+      );
+      let participantCount = 0;
+      function getParticipantNames() {
+        return [
+          ...participantsContainer.querySelectorAll(".participant-input"),
+        ].map((input, idx) => input.value || `參與者${idx + 1}`);
+      }
+
+      function updateItemParticipants() {
+        const participantNames = getParticipantNames();
+        itemsContainer.querySelectorAll(".item-row").forEach((row) => {
+          const sharedBy = [
+            ...row.querySelectorAll(".item-participant:checked"),
+          ].map((cb) => cb.value);
+          const participantsDiv = row.querySelector(".item-participants");
+          participantsDiv.innerHTML = participantNames
+            .map(
+              (name) => `
+      <label style="margin-right:8px;">
+        <input type="checkbox" class="item-participant" value="${name}" ${
+                sharedBy.includes(name) ? "checked" : ""
+              }>
+        ${name}
+      </label>
+    `
+            )
+            .join("");
+        });
+      }
+
+      function addParticipant(name = "") {
+        participantCount++;
+        const item = document.createElement("ion-item");
+        item.innerHTML = `
+    <ion-label position="stacked">姓名</ion-label>
+    <ion-input class="participant-input" placeholder="參與者${participantCount}" value="${name}"></ion-input>
+    <ion-button fill="clear" color="danger" class="remove-person-btn" style="margin-left:8px;">
+      <i class="fa fa-trash"></i>
+    </ion-button>
+  `;
+        participantsContainer.appendChild(item);
+        item.querySelector(".remove-person-btn").onclick = () => {
+          participantsContainer.removeChild(item);
+          updateItemParticipants();
+        };
+        item.querySelector(".participant-input").oninput =
+          updateItemParticipants;
+        updateItemParticipants();
+      }
+
+      document.getElementById("add-person-btn").onclick = () =>
+        addParticipant();
+
+      // 預設添加兩個參與者
+      addParticipant();
+      addParticipant();
+
+      // 動態添加消費項目
+      const itemsContainer = document.getElementById("items-container");
+      let itemCount = 0;
+      function addItem(name = "", amount = "", sharedBy = []) {
+        itemCount++;
+        const participantNames = getParticipantNames();
+        const itemRow = document.createElement("ion-item");
+        itemRow.classList.add("item-row");
+        itemRow.innerHTML = `
+          <ion-label position="stacked">項目名稱</ion-label>
+          <ion-input class="item-name" placeholder="項目${itemCount}" value="${name}"></ion-input>
+          <ion-label position="stacked">金額</ion-label>
+          <ion-input class="item-amount" type="number" min="0" placeholder="0" value="${amount}"></ion-input>
+          <ion-label position="stacked">分攤人員</ion-label>
+          <div class="item-participants">
+            ${participantNames
+              .map(
+                (n) => `
+              <label style="margin-right:8px;">
+                <input type="checkbox" class="item-participant" value="${n}" ${
+                  sharedBy.includes(n) ? "checked" : ""
+                }>
+                ${n}
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <ion-button fill="clear" color="danger" class="remove-item-btn" style="margin-left:8px;">
+            <i class="fa fa-trash"></i>
+          </ion-button>
+        `;
+        itemsContainer.appendChild(itemRow);
+        itemRow.querySelector(".remove-item-btn").onclick = () => {
+          itemsContainer.removeChild(itemRow);
+        };
+      }
+      document.getElementById("add-item-btn").onclick = () => addItem();
+
+      // 預設添加一個消費項目
+      addItem();
+
+      // 收集表單資料
+      function collectBillData() {
+        const name = document.getElementById("bill-name").value;
+        const date = document.getElementById("bill-date").value;
+        const location = document.getElementById("bill-location").value;
+        const tip = parseFloat(document.getElementById("bill-tip").value) || 0;
+        const participants = [
+          ...participantsContainer.querySelectorAll(".participant-input"),
+        ].map((input) => ({
+          name: input.value,
+        }));
+        const items = [...itemsContainer.querySelectorAll(".item-row")].map(
+          (row) => ({
+            name: row.querySelector(".item-name").value,
+            amount: parseFloat(row.querySelector(".item-amount").value) || 0,
+            sharedBy: [
+              ...row.querySelectorAll(".item-participant:checked"),
+            ].map((cb) => cb.value),
+          })
+        );
+        return { name, date, location, tip, participants, items };
+      }
+
+      // 計算賬單
+      document.getElementById("calculate-btn").onclick = async () => {
+        const billData = collectBillData();
+        const res = await fetch("/api/calculateBill", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(billData),
+        });
+        const result = await res.json();
+        document.getElementById("result-content").innerHTML =
+          renderResult(result);
+        document.querySelector("ion-modal#result-modal").present();
+      };
+
+      // 保存賬單
+      document.getElementById("save-draft-btn").onclick = async () => {
+        const billData = collectBillData();
+        await fetch("/api/saveBill", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(billData),
+        });
+        alert("賬單已保存");
+      };
+
+      // 關閉結果模態框
+      document.getElementById("close-modal-btn").onclick = () => {
+        document.querySelector("ion-modal#result-modal").dismiss();
+      };
+
+      // 結果渲染
+      function renderResult(result) {
+        if (!result.details) return "計算失敗或無結果";
+        return result.details
+          .map((d) => `<div>${d.name}: ${d.amount} 元</div>`)
+          .join("");
+      }
+    </script>
   </body>
 </html>
