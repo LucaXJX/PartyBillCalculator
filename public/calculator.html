@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/icon32x32.png" sizes="16x16" />
+    <title>智能賬單計算 - PBC聚賬通</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <!-- 使用Tailwind中的颜色和字体 -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#4F46E5", // 靛藍色
+              secondary: "#EC4899", // 粉紅色
+              accent: "#F59E0B", // 琥珀色
+              light: "#F3F4F6",
+              dark: "#1F2937",
+            },
+            fontFamily: {
+              sans: ["Inter", "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- 自定義系列工具類 -->
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+        .text-shadow {
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card-hover {
+          @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+        }
+        .btn-primary {
+          @apply bg-accent text-white font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg hover:bg-amber-600 transition-all duration-300 transform hover:-translate-y-0.5;
+        }
+        .btn-secondary {
+          @apply bg-white text-primary border border-primary font-semibold py-3 px-6 rounded-full shadow-sm hover:shadow-md hover:bg-primary/5 transition-all duration-300;
+        }
+        .input-focus {
+          @apply focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-sans text-dark bg-gray-50 min-h-screen">
+    <!-- 頂部導航欄 -->
+    <header
+      id="navbar"
+      class="fixed w-full bg-white shadow-sm z-50 transition-all duration-300"
+    >
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16 md:h-20">
+          <!-- 網站標誌 -->
+          <div class="flex items-center">
+            <a
+              href="/index.html"
+              id="logo-link"
+              class="flex items-center space-x-2"
+            >
+              <img
+                src="/img/icon499x499.png"
+                alt="PBC聚賬通標誌"
+                class="h-10 w-10 md:h-12 md:w-12 object-contain"
+              />
+              <span class="text-xl font-bold text-primary">PBC聚賬通</span>
+            </a>
+          </div>
+
+          <!-- 導航鏈接 - 桌面版 -->
+          <nav class="hidden md:flex items-center space-x-8">
+            <a href="#" class="text-primary font-medium">智能計算</a>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-primary transition-colors"
+              >我的賬單</a
+            >
+            <a
+              href="#"
+              class="text-gray-600 hover:text-primary transition-colors"
+              >聯絡我們</a
+            >
+          </nav>
+
+          <!-- 登錄/用戶信息 -->
+          <div class="flex items-center space-x-4">
+            <!-- 用戶頭像和下拉菜單 -->
+            <div class="relative group">
+              <button class="flex items-center space-x-2 focus:outline-none">
+                <img
+                  src="https://picsum.photos/100/100?random=user"
+                  alt="用戶頭像"
+                  class="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
+                />
+                <span class="hidden sm:inline-block font-medium">陳小明</span>
+                <i
+                  class="fa fa-angle-down text-gray-500 group-hover:text-primary transition-colors"
+                ></i>
+              </button>
+              <!-- 下拉菜單 -->
+              <div
+                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2"
+              >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                >
+                  <i class="fa fa-user-o mr-2"></i>個人資料
+                </a>
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                >
+                  <i class="fa fa-cog mr-2"></i>設置
+                </a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-red-500 hover:bg-red-50 transition-colors"
+                >
+                  <i class="fa fa-sign-out mr-2"></i>退出登錄
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主要內容 -->
+    <main class="pt-24 pb-20">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- 頁面標題 -->
+        <div class="text-center mb-12">
+          <h1 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4 text-dark">
+            智能賬單<span class="text-primary">計算</span>
+          </h1>
+          <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+            簡單輸入，公平分攤，輕鬆搞定每一筆聚會賬單
+          </p>
+        </div>
+
+        <div class="max-w-5xl mx-auto">
+          <!-- 步驟導航 -->
+          <div class="flex flex-wrap justify-center mb-10">
+            <div class="flex items-center">
+              <div
+                class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md shadow-primary/20"
+              >
+                1
+              </div>
+              <div class="h-1 w-16 bg-primary mx-2"></div>
+              <span class="text-primary font-medium">基本信息</span>
+            </div>
+            <div class="flex items-center ml-8">
+              <div
+                class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md shadow-primary/20"
+              >
+                2
+              </div>
+              <div class="h-1 w-16 bg-primary mx-2"></div>
+              <span class="text-primary font-medium">添加項目</span>
+            </div>
+            <div class="flex items-center ml-8">
+              <div
+                class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold"
+              >
+                3
+              </div>
+              <div class="h-1 w-16 bg-gray-200 mx-2"></div>
+              <span class="text-gray-500">計算結果</span>
+            </div>
+          </div>
+
+          <!-- 計算卡片 -->
+          <div
+            class="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-500 hover:shadow-2xl"
+          >
+            <!-- 卡片頭部 -->
+            <div
+              class="bg-gradient-to-r from-primary to-primary/80 p-6 text-white"
+            >
+              <h2 class="text-2xl font-bold mb-2">創建新賬單</h2>
+              <p class="text-white/90">
+                輸入聚會信息和消費項目，我們將為您自動計算
+              </p>
+            </div>
+
+            <!-- 卡片內容 -->
+            <div class="p-6 md:p-8">
+              <!-- 基本信息表單 -->
+              <div class="mb-10">
+                <h3 class="text-xl font-semibold mb-6 flex items-center">
+                  <i class="fa fa-info-circle text-primary mr-3"></i>基本信息
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      for="bill-name"
+                      class="block text-gray-700 font-medium mb-2"
+                      >聚會名稱</label
+                    >
+                    <input
+                      type="text"
+                      id="bill-name"
+                      placeholder="例如：週末聚餐、公司下午茶"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="bill-date"
+                      class="block text-gray-700 font-medium mb-2"
+                      >日期</label
+                    >
+                    <input
+                      type="date"
+                      id="bill-date"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="bill-location"
+                      class="block text-gray-700 font-medium mb-2"
+                      >地點</label
+                    >
+                    <input
+                      type="text"
+                      id="bill-location"
+                      placeholder="例如：麥當勞、鼎泰豐"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="bill-tip"
+                      class="block text-gray-700 font-medium mb-2"
+                      >小費比例 (%)</label
+                    >
+                    <input
+                      type="number"
+                      id="bill-tip"
+                      placeholder="0"
+                      min="0"
+                      max="100"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- 參與者 -->
+              <div class="mb-10">
+                <div class="flex justify-between items-center mb-6">
+                  <h3 class="text-xl font-semibold flex items-center">
+                    <i class="fa fa-users text-primary mr-3"></i>參與者
+                  </h3>
+                  <button
+                    id="add-person-btn"
+                    class="flex items-center text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <i class="fa fa-plus-circle mr-1"></i> 添加參與者
+                  </button>
+                </div>
+
+                <div id="participants-container" class="space-y-4">
+                  <div
+                    class="participant-item flex items-center p-4 bg-light rounded-lg"
+                  >
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold mr-4"
+                    >
+                      <i class="fa fa-user"></i>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="參與者姓名"
+                      class="flex-grow px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all duration-300"
+                    />
+                    <button
+                      class="remove-person-btn ml-4 text-gray-400 hover:text-red-500 transition-colors"
+                    >
+                      <i class="fa fa-times-circle text-xl"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 消費項目 -->
+              <div class="mb-10">
+                <div class="flex justify-between items-center mb-6">
+                  <h3 class="text-xl font-semibold flex items-center">
+                    <i class="fa fa-shopping-basket text-primary mr-3"></i
+                    >消費項目
+                  </h3>
+                  <button
+                    id="add-item-btn"
+                    class="flex items-center text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <i class="fa fa-plus-circle mr-1"></i> 添加項目
+                  </button>
+                </div>
+
+                <div id="items-container" class="space-y-6">
+                  <!-- 初始为空，通过JS添加 -->
+                </div>
+              </div>
+
+              <!-- 操作按鈕 -->
+              <div
+                class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 pt-6 border-t border-gray-200"
+              >
+                <button
+                  id="save-draft-btn"
+                  class="btn-secondary w-full sm:w-auto"
+                >
+                  <i class="fa fa-save mr-2"></i> 保存草稿
+                </button>
+                <button id="calculate-btn" class="btn-primary w-full sm:w-auto">
+                  <i class="fa fa-calculator mr-2"></i> 開始計算
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="bg-dark text-white pt-12 pb-8">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <!-- web info -->
+          <div>
+            <div class="flex items-center space-x-2 mb-4">
+              <i class="fa fa-calculator text-primary text-2xl"></i>
+              <span class="text-xl font-bold">PBC聚賬通</span>
+            </div>
+            <p class="text-gray-400 mb-4">
+              讓聚會帳單分攤變得簡單公平，提升社交體驗的必備工具。
+            </p>
+          </div>
+
+          <!-- 快速連結 -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">快速連結</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/index.html"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >首頁</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >智能計算</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >我的賬單</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >聯絡我們</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- 法律信息 -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">法律信息</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/privacy-policy.html"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >個人資料私隱政策</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/disclaimer.html"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >免責條例</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/copyright.html"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >版權聲明</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- 聯絡我們 -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">聯絡我們</h4>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fa fa-envelope-o text-gray-400 mt-1 mr-3"></i>
+                <span class="text-gray-400">support@pbcapp.com</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fa fa-phone text-gray-400 mt-1 mr-3"></i>
+                <span class="text-gray-400">852-1234-5678</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-6 text-center text-gray-500">
+          <p>&copy; 2025 PBC聚賬通. 保留所有權利</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- 計算結果模態框 -->
+    <div
+      id="result-modal"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 opacity-0 invisible transition-all duration-300"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-all duration-300"
+      >
+        <div
+          class="bg-gradient-to-r from-primary to-primary/80 p-6 text-white flex justify-between items-center sticky top-0"
+        >
+          <h3 class="text-2xl font-bold">計算結果</h3>
+          <button
+            id="close-modal-btn"
+            class="text-white hover:text-white/80 transition-colors"
+          >
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="p-6">
+          <div class="mb-8">
+            <h4 class="text-xl font-semibold mb-4">聚會信息</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+              <div class="flex items-center">
+                <i class="fa fa-tag text-primary mr-3 w-5 text-center"></i>
+                <span id="result-bill-name">週末聚餐</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa fa-calendar text-primary mr-3 w-5 text-center"></i>
+                <span id="result-bill-date">2024年5月25日</span>
+              </div>
+              <div class="flex items-center">
+                <i
+                  class="fa fa-map-marker text-primary mr-3 w-5 text-center"
+                ></i>
+                <span id="result-bill-location">麥當勞</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa fa-users text-primary mr-3 w-5 text-center"></i>
+                <span id="result-bill-participants">2位參與者</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h4 class="text-xl font-semibold mb-4">費用明細</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse">
+                <thead>
+                  <tr class="bg-light">
+                    <th
+                      class="py-3 px-4 text-left text-gray-700 font-semibold border-b"
+                    >
+                      項目
+                    </th>
+                    <th
+                      class="py-3 px-4 text-right text-gray-700 font-semibold border-b"
+                    >
+                      金額 (HKD)
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="result-items-table" class="text-gray-600">
+                  <!-- 结果将通过JS填充 -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h4 class="text-xl font-semibold mb-4">分攤結果</h4>
+            <div id="result-participants-container" class="space-y-4">
+              <!-- 结果将通过JS填充 -->
+            </div>
+          </div>
+
+          <div
+            class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 pt-6 border-t border-gray-200"
+          >
+            <button class="btn-secondary w-full sm:w-auto">
+              <i class="fa fa-print mr-2"></i> 列印報告
+            </button>
+            <div class="flex space-x-4 w-full sm:w-auto">
+              <button class="btn-secondary w-full sm:w-auto">
+                <i class="fa fa-share-alt mr-2"></i> 分享結果
+              </button>
+              <button id="save-result-btn" class="btn-primary w-full sm:w-auto">
+                <i class="fa fa-save mr-2"></i> 保存賬單
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module">
+      // 導入核心TypeScript模組
+      // 注意：路徑相對於當前HTML文件。假設編譯後的JS文件在與TS源文件相同的目錄結構下。
+      // 如果你的構建工具將JS輸出到其他地方，請調整此路徑。
+      import { DataManager, BillCalculator } from "../server/core.js";
+
+      // 初始化數據管理器和計算器
+      const dataManager = new DataManager();
+      const calculator = new BillCalculator();
+
+      // DOM元素
+      const billNameInput = document.getElementById("bill-name");
+      const billDateInput = document.getElementById("bill-date");
+      const billLocationInput = document.getElementById("bill-location");
+      const billTipInput = document.getElementById("bill-tip");
+      const participantsContainer = document.getElementById(
+        "participants-container"
+      );
+      const itemsContainer = document.getElementById("items-container");
+      const addPersonBtn = document.getElementById("add-person-btn");
+      const addItemBtn = document.getElementById("add-item-btn");
+      const calculateBtn = document.getElementById("calculate-btn");
+      const saveDraftBtn = document.getElementById("save-draft-btn");
+      const resultModal = document.getElementById("result-modal");
+      const closeModalBtn = document.getElementById("close-modal-btn");
+      const saveResultBtn = document.getElementById("save-result-btn");
+
+      // 初始化日期為今天
+      billDateInput.value = new Date().toISOString().split("T")[0];
+
+      // 更新賬單基本信息
+      function updateBillInfo() {
+        dataManager.updateBillInfo(
+          billNameInput.value,
+          billDateInput.value,
+          billLocationInput.value,
+          parseInt(billTipInput.value) || 0
+        );
+      }
+
+      // 生成唯一ID (簡單實現)
+      function generateId() {
+        return Math.random().toString(36).substring(2, 9);
+      }
+
+      // 添加參與者
+      addPersonBtn.addEventListener("click", () => {
+        const newParticipant = document.createElement("div");
+        newParticipant.className =
+          "participant-item flex items-center p-4 bg-light rounded-lg transform transition-all duration-300 opacity-0 translate-y-2";
+        newParticipant.innerHTML = `
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold mr-4">
+                    <i class="fa fa-user"></i>
+                </div>
+                <input type="text" placeholder="參與者姓名" 
+                    class="flex-grow px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all duration-300">
+                <button class="remove-person-btn ml-4 text-gray-400 hover:text-red-500 transition-colors">
+                    <i class="fa fa-times-circle text-xl"></i>
+                </button>
+            `;
+        participantsContainer.appendChild(newParticipant);
+
+        // 觸發動畫
+        setTimeout(() => {
+          newParticipant.classList.remove("opacity-0", "translate-y-2");
+        }, 10);
+
+        // 綁定刪除按鈕事件
+        newParticipant
+          .querySelector(".remove-person-btn")
+          .addEventListener("click", function () {
+            newParticipant.classList.add("opacity-0", "translate-y-2");
+            setTimeout(() => {
+              newParticipant.remove();
+            }, 300);
+          });
+
+        // 自動聚焦新輸入框
+        newParticipant.querySelector("input").focus();
+      });
+
+      // 添加項目
+      addItemBtn.addEventListener("click", () => {
+        const newItem = document.createElement("div");
+        newItem.className =
+          "item-card bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 opacity-0 translate-y-2";
+        newItem.dataset.id = generateId(); // 為項目設置ID
+        newItem.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mr-4">
+                            <i class="fa fa-cutlery"></i>
+                        </div>
+                        <input type="text" placeholder="項目名稱" 
+                            class="item-name flex-grow px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all duration-300">
+                    </div>
+                    <div class="flex items-center">
+                        <div class="mr-4">
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="form-checkbox h-5 w-5 text-primary rounded input-focus item-is-shared">
+                                <span class="ml-2 text-gray-700">共享</span>
+                            </label>
+                        </div>
+                        <button class="remove-item-btn text-gray-400 hover:text-red-500 transition-colors">
+                            <i class="fa fa-times-circle text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">金額 (HKD)</label>
+                        <input type="number" placeholder="0.00" min="0" step="0.01" 
+                            class="item-amount w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">項目參與者</label>
+                        <div class="flex flex-wrap gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50 item-participants-container">
+                            <!-- 參與者將由JS動態填充 -->
+                        </div>
+                    </div>
+                </div>
+            `;
+        itemsContainer.appendChild(newItem);
+
+        // 觸發動畫
+        setTimeout(() => {
+          newItem.classList.remove("opacity-0", "translate-y-2");
+        }, 10);
+
+        // 綁定刪除按鈕事件
+        newItem
+          .querySelector(".remove-item-btn")
+          .addEventListener("click", function () {
+            newItem.classList.add("opacity-0", "translate-y-2");
+            setTimeout(() => {
+              newItem.remove();
+            }, 300);
+          });
+
+        // 自動聚焦新輸入框
+        newItem.querySelector(".item-name").focus();
+
+        // 動態填充項目參與者選擇
+        updateItemParticipantsList();
+      });
+
+      // 當參與者列表變更時，更新所有項目中的參與者選擇器
+      function updateItemParticipantsList() {
+        const allParticipants = Array.from(
+          participantsContainer.querySelectorAll(".participant-item input")
+        )
+          .map((input) => ({
+            id: input.parentElement.dataset.id || generateId(),
+            name: input.value.trim(),
+          }))
+          .filter((p) => p.name);
+
+        // 為每個參與者項設置ID
+        participantsContainer
+          .querySelectorAll(".participant-item")
+          .forEach((item, index) => {
+            if (!item.dataset.id) {
+              item.dataset.id = allParticipants[index].id;
+            }
+          });
+
+        document
+          .querySelectorAll(".item-participants-container")
+          .forEach((container) => {
+            container.innerHTML = "";
+
+            if (allParticipants.length === 0) {
+              container.innerHTML =
+                '<p class="text-gray-500 text-sm">請先添加參與者</p>';
+              return;
+            }
+
+            // 默認勾選所有參與者
+            allParticipants.forEach((participant) => {
+              const participantTag = document.createElement("div");
+              participantTag.className =
+                "person-tag flex items-center bg-primary/10 text-primary px-3 py-1 rounded-full";
+              participantTag.dataset.participantId = participant.id;
+              participantTag.innerHTML = `
+                        <span>${participant.name}</span>
+                        <button class="ml-2 text-primary/70 hover:text-primary">
+                            <i class="fa fa-times-circle"></i>
+                        </button>
+                    `;
+              container.appendChild(participantTag);
+
+              // 點擊標籤上的X移除參與者
+              participantTag
+                .querySelector("button")
+                .addEventListener("click", function () {
+                  participantTag.remove();
+                });
+            });
+
+            // 添加一個"添加參與者"按鈕
+            const addButton = document.createElement("button");
+            addButton.className =
+              "add-person-to-item flex items-center text-gray-500 hover:text-primary transition-colors";
+            addButton.innerHTML = '<i class="fa fa-plus-circle mr-1"></i> 添加';
+            container.appendChild(addButton);
+
+            addButton.addEventListener("click", function () {
+              // 找出尚未添加的參與者
+              const addedParticipantIds = Array.from(
+                container.querySelectorAll(".person-tag")
+              ).map((tag) => tag.dataset.participantId);
+              const availableParticipants = allParticipants.filter(
+                (p) => !addedParticipantIds.includes(p.id)
+              );
+
+              if (availableParticipants.length > 0) {
+                const newParticipantTag = document.createElement("div");
+                newParticipantTag.className =
+                  "person-tag flex items-center bg-primary/10 text-primary px-3 py-1 rounded-full";
+                newParticipantTag.dataset.participantId =
+                  availableParticipants[0].id;
+                newParticipantTag.innerHTML = `
+                            <span>${availableParticipants[0].name}</span>
+                            <button class="ml-2 text-primary/70 hover:text-primary">
+                                <i class="fa fa-times-circle"></i>
+                            </button>
+                        `;
+                // 插入到"添加"按鈕之前
+                container.insertBefore(newParticipantTag, addButton);
+
+                // 綁定移除事件
+                newParticipantTag
+                  .querySelector("button")
+                  .addEventListener("click", function () {
+                    newParticipantTag.remove();
+                  });
+              }
+            });
+          });
+      }
+
+      // 監聽參與者輸入變化，動態更新項目參與者列表
+      participantsContainer.addEventListener("input", function (e) {
+        if (e.target.matches(".participant-item input")) {
+          updateItemParticipantsList();
+        }
+      });
+
+      // 保存草稿
+      saveDraftBtn.addEventListener("click", function () {
+        // 收集表單數據
+        updateBillInfo();
+
+        // 收集參與者
+        const participants = Array.from(
+          participantsContainer.querySelectorAll(".participant-item")
+        )
+          .map((item) => ({
+            id: item.dataset.id || generateId(),
+            name: item.querySelector("input").value.trim(),
+          }))
+          .filter((p) => p.name);
+
+        participants.forEach((p) => dataManager.addParticipant(p.name));
+
+        // 收集項目
+        document.querySelectorAll(".item-card").forEach((item) => {
+          const name = item.querySelector(".item-name").value.trim();
+          const amount =
+            parseFloat(item.querySelector(".item-amount").value) || 0;
+          const isShared = item.querySelector(".item-is-shared").checked;
+          const participantIds = Array.from(
+            item.querySelectorAll(".person-tag")
+          ).map((tag) => tag.dataset.participantId);
+
+          if (name && amount > 0 && participantIds.length > 0) {
+            dataManager.addItem(name, amount, isShared, participantIds);
+          }
+        });
+
+        dataManager.saveAsDraft();
+        alert("草稿已保存！");
+      });
+
+      // 計算按鈕點擊事件
+      calculateBtn.addEventListener("click", function () {
+        // 保存當前數據
+        saveDraftBtn.click();
+
+        const bill = dataManager.getCurrentBill();
+        const results = calculator.calculate(bill);
+
+        // 更新模態框中的聚會信息
+        document.getElementById("result-bill-name").textContent =
+          bill.name || "未命名聚會";
+        document.getElementById("result-bill-date").textContent = bill.date
+          ? new Date(bill.date).toLocaleDateString("zh-Hant")
+          : "未知日期";
+        document.getElementById("result-bill-location").textContent =
+          bill.location || "未知地點";
+        document.getElementById(
+          "result-bill-participants"
+        ).textContent = `${bill.participants.length}位參與者`;
+
+        // 更新費用明細表
+        const itemsTableBody = document.getElementById("result-items-table");
+        itemsTableBody.innerHTML = "";
+
+        let subtotal = 0;
+        bill.items.forEach((item) => {
+          subtotal += item.amount;
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td class="py-3 px-4 border-b">${item.name}</td>
+                    <td class="py-3 px-4 text-right border-b">${item.amount.toFixed(
+                      2
+                    )}</td>
+                `;
+          itemsTableBody.appendChild(row);
+        });
+
+        // 添加小計、小費和總計
+        const tipAmount = subtotal * (bill.tipPercentage / 100);
+        const totalAmount = subtotal + tipAmount;
+
+        itemsTableBody.innerHTML += `
+                <tr>
+                    <td class="py-3 px-4 border-b font-medium">小計</td>
+                    <td class="py-3 px-4 text-right border-b font-medium">${subtotal.toFixed(
+                      2
+                    )}</td>
+                </tr>
+                <tr>
+                    <td class="py-3 px-4 border-b font-medium">小費 (${
+                      bill.tipPercentage
+                    }%)</td>
+                    <td class="py-3 px-4 text-right border-b font-medium">${tipAmount.toFixed(
+                      2
+                    )}</td>
+                </tr>
+                <tr>
+                    <td class="py-4 px-4 text-lg font-semibold text-primary">總金額</td>
+                    <td class="py-4 px-4 text-lg font-semibold text-right text-primary">${totalAmount.toFixed(
+                      2
+                    )}</td>
+                </tr>
+            `;
+
+        // 更新分攤結果
+        const participantsContainer = document.getElementById(
+          "result-participants-container"
+        );
+        participantsContainer.innerHTML = "";
+
+        results.forEach((result) => {
+          const participant = bill.participants.find(
+            (p) => p.id === result.participantId
+          );
+          if (participant) {
+            const participantCard = document.createElement("div");
+            participantCard.className =
+              "flex items-center p-4 bg-primary/5 rounded-lg";
+            participantCard.innerHTML = `
+                        <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold mr-4">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">${
+                                  participant.name
+                                }</span>
+                                <span class="text-lg font-bold text-primary">${result.amount.toFixed(
+                                  2
+                                )} HKD</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mt-1">
+                                <span>${result.breakdown}</span>
+                            </div>
+                        </div>
+                    `;
+            participantsContainer.appendChild(participantCard);
+          }
+        });
+
+        // 顯示計算結果模態框
+        resultModal.classList.remove("opacity-0", "invisible");
+        resultModal.querySelector(".bg-white").classList.remove("scale-95");
+        resultModal.querySelector(".bg-white").classList.add("scale-100");
+
+        // 禁止背景滾動
+        document.body.style.overflow = "hidden";
+      });
+
+      // 關閉模態框按鈕
+      closeModalBtn.addEventListener("click", function () {
+        resultModal.classList.add("opacity-0", "invisible");
+        resultModal.querySelector(".bg-white").classList.remove("scale-100");
+        resultModal.querySelector(".bg-white").classList.add("scale-95");
+
+        // 恢復背景滾動
+        document.body.style.overflow = "";
+      });
+
+      // 點擊模態框背景關閉
+      resultModal.addEventListener("click", function (e) {
+        if (e.target === this) {
+          closeModalBtn.click();
+        }
+      });
+
+      // 保存計算結果
+      saveResultBtn.addEventListener("click", function () {
+        // 保存邏輯與保存草稿類似，但可以標記為已完成
+        alert("賬單已保存！");
+        closeModalBtn.click();
+      });
+
+      // 初始化時添加一個項目輸入框
+      setTimeout(() => {
+        addItemBtn.click();
+      }, 100);
+    </script>
+  </body>
+</html>
