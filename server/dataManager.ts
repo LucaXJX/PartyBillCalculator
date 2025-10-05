@@ -1,6 +1,6 @@
 // src/dataManager.ts
-import { Bill, Participant, Item } from "./types";
-import { saveBill, getBill, updateBill } from "./persistence"; // 假设的持久化模块
+import { Bill, Participant, Item } from "./types.js";
+import { saveBill, getBill, updateBill } from "./persistence.js"; // 假设的持久化模块
 
 // 生成唯一ID的简单工具函数
 const generateId = () => Math.random().toString(36).substring(2, 9);
@@ -55,11 +55,13 @@ export class DataManager {
 
   removeParticipant(id: string): void {
     this.currentBill.participants = this.currentBill.participants.filter(
-      (p) => p.id !== id
+      (p: Participant) => p.id !== id
     );
     // 同时从项目中移除该参与者
-    this.currentBill.items.forEach((item) => {
-      item.participantsIds = item.participantsIds.filter((pId) => pId !== id);
+    this.currentBill.items.forEach((item: Item) => {
+      item.participantsIds = item.participantsIds.filter(
+        (pId: string) => pId !== id
+      );
     });
   }
 
@@ -82,11 +84,13 @@ export class DataManager {
   }
 
   removeItem(id: string): void {
-    this.currentBill.items = this.currentBill.items.filter((i) => i.id !== id);
+    this.currentBill.items = this.currentBill.items.filter(
+      (i: Item) => i.id !== id
+    );
   }
 
   updateItemParticipants(itemId: string, participantIds: string[]): void {
-    const item = this.currentBill.items.find((i) => i.id === itemId);
+    const item = this.currentBill.items.find((i: Item) => i.id === itemId);
     if (item) {
       item.participantsIds = participantIds;
     }

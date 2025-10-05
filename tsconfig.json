@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "rootDir": "./", // 或者將 "rootDir" 設置為項目根目錄
-    "outDir": "./public/js",
+    "target": "ES2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./server", // 或者將 "rootDir" 設置為項目根目錄
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

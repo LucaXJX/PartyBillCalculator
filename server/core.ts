@@ -2,9 +2,9 @@
 // server/core.ts
 
 // 匯入所有需要對外暴露的類和類型
-import { BillCalculator } from "./billCalculator";
-import { DataManager } from "./dataManager";
-import { Bill, Participant, Item, CalculationResult } from "./types";
+import { BillCalculator } from "./billCalculator.js";
+import { DataManager } from "./dataManager.js";
+import { Bill, Participant, Item, CalculationResult } from "./types.js";
 
 // 將它們匯出，形成一個統一的入口
 export {

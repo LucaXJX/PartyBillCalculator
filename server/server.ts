@@ -3,12 +3,14 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "fs";
-import { DataManager, BillCalculator } from "./core";
-
-// 解決 ES6 模塊中的 __dirname 問題
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import fs from "fs";
+import { DataManager, BillCalculator } from "./core.js";
+
+// 解決 ES6 模塊中的 __dirname 問題
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -89,4 +91,16 @@ app.listen(PORT, () => {
   console.log(`服務器運行在 http://localhost:${PORT}`);
   console.log(`- 靜態資源來源: public 文件夾`);
   console.log(`- API 根路徑: /api`);
+});
+
+// 在需要使用 __dirname 的地方直接使用即可
+app.use(express.static(path.join(__dirname, "../public")));
+
+app.use(/.*/, (req, res) => {
+  const indexPath = path.join(__dirname, "../public/index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send("Not Found");
+  }
 });
