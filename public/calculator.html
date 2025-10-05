@@ -3,731 +3,217 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/img/icon32x32.png" sizes="16x16" />
     <title>智能賬單計算 - PBC聚賬通</title>
-    <!-- 引入Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入Font Awesome -->
+    <!-- Ionic CDN -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+
+    <!-- Font Awesome CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
       rel="stylesheet"
     />
-    <!-- 使用Tailwind中的颜色和字体 -->
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#4F46E5", // 靛藍色
-              secondary: "#EC4899", // 粉紅色
-              accent: "#F59E0B", // 琥珀色
-              light: "#F3F4F6",
-              dark: "#1F2937",
-            },
-            fontFamily: {
-              sans: ["Inter", "system-ui", "sans-serif"],
-            },
-          },
-        },
-      };
-    </script>
-
-    <!-- 自定義系列工具類 -->
-    <style type="text/tailwindcss">
-      @layer utilities {
-        .content-auto {
-          content-visibility: auto;
-        }
-        .text-shadow {
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .card-hover {
-          @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
-        }
-        .btn-primary {
-          @apply bg-accent text-white font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg hover:bg-amber-600 transition-all duration-300 transform hover:-translate-y-0.5;
-        }
-        .btn-secondary {
-          @apply bg-white text-primary border border-primary font-semibold py-3 px-6 rounded-full shadow-sm hover:shadow-md hover:bg-primary/5 transition-all duration-300;
-        }
-        .input-focus {
-          @apply focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none;
-        }
+    <style>
+      body {
+        background: #f3f4f6;
+      }
+      .fa {
+        vertical-align: middle;
       }
     </style>
   </head>
-  <body class="font-sans text-dark bg-gray-50 min-h-screen">
-    <!-- 頂部導航欄 -->
-    <header
-      id="navbar"
-      class="fixed w-full bg-white shadow-sm z-50 transition-all duration-300"
-    >
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16 md:h-20">
-          <!-- 網站標誌 -->
-          <div class="flex items-center">
-            <a
-              href="/index.html"
-              id="logo-link"
-              class="flex items-center space-x-2"
+  <body>
+    <ion-app>
+      <!-- 頂部導航 -->
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-buttons slot="start">
+            <ion-back-button defaultHref="/index.html"></ion-back-button>
+          </ion-buttons>
+          <ion-title>
+            <img
+              src="/img/icon32x32.png"
+              alt="logo"
+              style="height: 24px; vertical-align: middle; margin-right: 8px"
+            />
+            PBC聚賬通
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content fullscreen>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <i class="fa fa-calculator text-primary"></i>
+              智能賬單計算
+            </ion-card-title>
+            <ion-card-subtitle
+              >簡單輸入，公平分攤，輕鬆搞定每一筆聚會賬單</ion-card-subtitle
             >
-              <img
-                src="/img/icon499x499.png"
-                alt="PBC聚賬通標誌"
-                class="h-10 w-10 md:h-12 md:w-12 object-contain"
-              />
-              <span class="text-xl font-bold text-primary">PBC聚賬通</span>
-            </a>
-          </div>
-
-          <!-- 導航鏈接 - 桌面版 -->
-          <nav class="hidden md:flex items-center space-x-8">
-            <a href="#" class="text-primary font-medium">智能計算</a>
-            <a
-              href="#"
-              class="text-gray-600 hover:text-primary transition-colors"
-              >我的賬單</a
-            >
-            <a
-              href="#"
-              class="text-gray-600 hover:text-primary transition-colors"
-              >聯絡我們</a
-            >
-          </nav>
-
-          <!-- 登錄/用戶信息 -->
-          <div class="flex items-center space-x-4">
-            <!-- 用戶頭像和下拉菜單 -->
-            <div class="relative group">
-              <button class="flex items-center space-x-2 focus:outline-none">
-                <img
-                  src="https://picsum.photos/100/100?random=user"
-                  alt="用戶頭像"
-                  class="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
-                />
-                <span class="hidden sm:inline-block font-medium">陳小明</span>
-                <i
-                  class="fa fa-angle-down text-gray-500 group-hover:text-primary transition-colors"
-                ></i>
-              </button>
-              <!-- 下拉菜單 -->
-              <div
-                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2"
-              >
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
+          </ion-card-header>
+          <ion-card-content>
+            <!-- 基本信息 -->
+            <ion-item>
+              <ion-label position="stacked">聚會名稱</ion-label>
+              <ion-input
+                id="bill-name"
+                placeholder="例如：週末聚餐、公司下午茶"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">日期</ion-label>
+              <ion-item lines="none">
+                <ion-datetime
+                  id="bill-date"
+                  presentation="date"
+                  display-format="YYYY-MM-DD"
+                  value=""
+                ></ion-datetime>
+                <ion-button
+                  size="small"
+                  fill="outline"
+                  style="margin-left: 8px"
+                  onclick="document.getElementById('bill-date').value = new Date().toISOString().slice(0,10);"
                 >
-                  <i class="fa fa-user-o mr-2"></i>個人資料
-                </a>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                  今天
+                </ion-button>
+              </ion-item>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">地點</ion-label>
+              <ion-input
+                id="bill-location"
+                placeholder="例如：麥當勞、鼎泰豐"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">小費比例 (%)</ion-label>
+              <ion-input
+                id="bill-tip"
+                type="number"
+                min="0"
+                max="100"
+                placeholder="0"
+              ></ion-input>
+            </ion-item>
+
+            <!-- 參與者 -->
+            <ion-list id="participants-container">
+              <ion-list-header>
+                <ion-label
+                  ><i class="fa fa-users text-primary"></i> 參與者</ion-label
                 >
-                  <i class="fa fa-cog mr-2"></i>設置
-                </a>
-                <div class="border-t border-gray-100 my-1"></div>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-red-500 hover:bg-red-50 transition-colors"
+                <ion-button id="add-person-btn" fill="outline" size="small">
+                  <i class="fa fa-plus-circle"></i> 添加參與者
+                </ion-button>
+              </ion-list-header>
+              <!-- 參與者項目將由JS動態添加 -->
+            </ion-list>
+
+            <!-- 消費項目 -->
+            <ion-list id="items-container">
+              <ion-list-header>
+                <ion-label
+                  ><i class="fa fa-shopping-basket text-primary"></i>
+                  消費項目</ion-label
                 >
-                  <i class="fa fa-sign-out mr-2"></i>退出登錄
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+                <ion-button id="add-item-btn" fill="outline" size="small">
+                  <i class="fa fa-plus-circle"></i> 添加項目
+                </ion-button>
+              </ion-list-header>
+              <!-- 項目將由JS動態添加 -->
+            </ion-list>
 
-    <!-- 主要內容 -->
-    <main class="pt-24 pb-20">
-      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- 頁面標題 -->
-        <div class="text-center mb-12">
-          <h1 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4 text-dark">
-            智能賬單<span class="text-primary">計算</span>
-          </h1>
-          <p class="text-gray-600 max-w-2xl mx-auto text-lg">
-            簡單輸入，公平分攤，輕鬆搞定每一筆聚會賬單
-          </p>
-        </div>
+            <!-- 操作按鈕 -->
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button id="save-draft-btn" expand="block" fill="outline">
+                    <i class="fa fa-save"></i> 保存草稿
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button id="calculate-btn" expand="block" color="primary">
+                    <i class="fa fa-calculator"></i> 開始計算
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
 
-        <div class="max-w-5xl mx-auto">
-          <!-- 步驟導航 -->
-          <div class="flex flex-wrap justify-center mb-10">
-            <div class="flex items-center">
-              <div
-                class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md shadow-primary/20"
-              >
-                1
-              </div>
-              <div class="h-1 w-16 bg-primary mx-2"></div>
-              <span class="text-primary font-medium">基本信息</span>
-            </div>
-            <div class="flex items-center ml-8">
-              <div
-                class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md shadow-primary/20"
-              >
-                2
-              </div>
-              <div class="h-1 w-16 bg-primary mx-2"></div>
-              <span class="text-primary font-medium">添加項目</span>
-            </div>
-            <div class="flex items-center ml-8">
-              <div
-                class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold"
-              >
-                3
-              </div>
-              <div class="h-1 w-16 bg-gray-200 mx-2"></div>
-              <span class="text-gray-500">計算結果</span>
-            </div>
-          </div>
+        <!-- 計算結果模態框 -->
+        <ion-modal id="result-modal">
+          <ion-content>
+            <ion-card>
+              <ion-card-header color="primary">
+                <ion-card-title>
+                  <i class="fa fa-check-circle"></i> 計算結果
+                </ion-card-title>
+                <ion-button id="close-modal-btn" slot="end" fill="clear">
+                  <i class="fa fa-times"></i>
+                </ion-button>
+              </ion-card-header>
+              <ion-card-content>
+                <!-- 結果內容區域 -->
+                <div id="result-content"></div>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col>
+                      <ion-button expand="block" fill="outline">
+                        <i class="fa fa-print"></i> 列印報告
+                      </ion-button>
+                    </ion-col>
+                    <ion-col>
+                      <ion-button expand="block" fill="outline">
+                        <i class="fa fa-share-alt"></i> 分享結果
+                      </ion-button>
+                    </ion-col>
+                    <ion-col>
+                      <ion-button
+                        id="save-result-btn"
+                        expand="block"
+                        color="primary"
+                      >
+                        <i class="fa fa-save"></i> 保存賬單
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-content>
+        </ion-modal>
+      </ion-content>
 
-          <!-- 計算卡片 -->
-          <div
-            class="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-500 hover:shadow-2xl"
+      <ion-footer>
+        <ion-toolbar color="dark">
+          <ion-title size="small"
+            >&copy; 2025 PBC聚賬通. 保留所有權利</ion-title
           >
-            <!-- 卡片頭部 -->
-            <div
-              class="bg-gradient-to-r from-primary to-primary/80 p-6 text-white"
-            >
-              <h2 class="text-2xl font-bold mb-2">創建新賬單</h2>
-              <p class="text-white/90">
-                輸入聚會信息和消費項目，我們將為您自動計算
-              </p>
-            </div>
+        </ion-toolbar>
+      </ion-footer>
+    </ion-app>
 
-            <!-- 卡片內容 -->
-            <div class="p-6 md:p-8">
-              <!-- 基本信息表單 -->
-              <div class="mb-10">
-                <h3 class="text-xl font-semibold mb-6 flex items-center">
-                  <i class="fa fa-info-circle text-primary mr-3"></i>基本信息
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label
-                      for="bill-name"
-                      class="block text-gray-700 font-medium mb-2"
-                      >聚會名稱</label
-                    >
-                    <input
-                      type="text"
-                      id="bill-name"
-                      placeholder="例如：週末聚餐、公司下午茶"
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="bill-date"
-                      class="block text-gray-700 font-medium mb-2"
-                      >日期</label
-                    >
-                    <input
-                      type="date"
-                      id="bill-date"
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="bill-location"
-                      class="block text-gray-700 font-medium mb-2"
-                      >地點</label
-                    >
-                    <input
-                      type="text"
-                      id="bill-location"
-                      placeholder="例如：麥當勞、鼎泰豐"
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="bill-tip"
-                      class="block text-gray-700 font-medium mb-2"
-                      >小費比例 (%)</label
-                    >
-                    <input
-                      type="number"
-                      id="bill-tip"
-                      placeholder="0"
-                      min="0"
-                      max="100"
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-300"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- 參與者 -->
-              <div class="mb-10">
-                <div class="flex justify-between items-center mb-6">
-                  <h3 class="text-xl font-semibold flex items-center">
-                    <i class="fa fa-users text-primary mr-3"></i>參與者
-                  </h3>
-                  <button
-                    id="add-person-btn"
-                    class="flex items-center text-primary hover:text-primary/80 transition-colors"
-                  >
-                    <i class="fa fa-plus-circle mr-1"></i> 添加參與者
-                  </button>
-                </div>
-
-                <div id="participants-container" class="space-y-4">
-                  <div
-                    class="participant-item flex items-center p-4 bg-light rounded-lg"
-                  >
-                    <div
-                      class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold mr-4"
-                    >
-                      <i class="fa fa-user"></i>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="參與者姓名"
-                      class="flex-grow px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all duration-300"
-                    />
-                    <button
-                      class="remove-person-btn ml-4 text-gray-400 hover:text-red-500 transition-colors"
-                    >
-                      <i class="fa fa-times-circle text-xl"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 消費項目 -->
-              <div class="mb-10">
-                <div class="flex justify-between items-center mb-6">
-                  <h3 class="text-xl font-semibold flex items-center">
-                    <i class="fa fa-shopping-basket text-primary mr-3"></i
-                    >消費項目
-                  </h3>
-                  <button
-                    id="add-item-btn"
-                    class="flex items-center text-primary hover:text-primary/80 transition-colors"
-                  >
-                    <i class="fa fa-plus-circle mr-1"></i> 添加項目
-                  </button>
-                </div>
-
-                <div id="items-container" class="space-y-6">
-                  <!-- 初始为空，通过JS添加 -->
-                </div>
-              </div>
-
-              <!-- 操作按鈕 -->
-              <div
-                class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 pt-6 border-t border-gray-200"
-              >
-                <button
-                  id="save-draft-btn"
-                  class="btn-secondary w-full sm:w-auto"
-                >
-                  <i class="fa fa-save mr-2"></i> 保存草稿
-                </button>
-                <button id="calculate-btn" class="btn-primary w-full sm:w-auto">
-                  <i class="fa fa-calculator mr-2"></i> 開始計算
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- 頁腳 -->
-    <footer class="bg-dark text-white pt-12 pb-8">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <!-- web info -->
-          <div>
-            <div class="flex items-center space-x-2 mb-4">
-              <i class="fa fa-calculator text-primary text-2xl"></i>
-              <span class="text-xl font-bold">PBC聚賬通</span>
-            </div>
-            <p class="text-gray-400 mb-4">
-              讓聚會帳單分攤變得簡單公平，提升社交體驗的必備工具。
-            </p>
-          </div>
-
-          <!-- 快速連結 -->
-          <div>
-            <h4 class="text-lg font-semibold mb-4">快速連結</h4>
-            <ul class="space-y-2">
-              <li>
-                <a
-                  href="/index.html"
-                  class="text-gray-400 hover:text-white transition-colors"
-                  >首頁</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-white transition-colors"
-                  >智能計算</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-white transition-colors"
-                  >我的賬單</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-white transition-colors"
-                  >聯絡我們</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- 法律信息 -->
-          <div>
-            <h4 class="text-lg font-semibold mb-4">法律信息</h4>
-            <ul class="space-y-2">
-              <li>
-                <a
-                  href="/privacy-policy.html"
-                  class="text-gray-400 hover:text-white transition-colors"
-                  >個人資料私隱政策</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/disclaimer.html"
-                  class="text-gray-400 hover:text-white transition-colors"
-                  >免責條例</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/copyright.html"
-                  class="text-gray-400 hover:text-white transition-colors"
-                  >版權聲明</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- 聯絡我們 -->
-          <div>
-            <h4 class="text-lg font-semibold mb-4">聯絡我們</h4>
-            <ul class="space-y-2">
-              <li class="flex items-start">
-                <i class="fa fa-envelope-o text-gray-400 mt-1 mr-3"></i>
-                <span class="text-gray-400">support@pbcapp.com</span>
-              </li>
-              <li class="flex items-start">
-                <i class="fa fa-phone text-gray-400 mt-1 mr-3"></i>
-                <span class="text-gray-400">852-1234-5678</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="border-t border-gray-800 pt-6 text-center text-gray-500">
-          <p>&copy; 2025 PBC聚賬通. 保留所有權利</p>
-        </div>
-      </div>
-    </footer>
-
-    <!-- 計算結果模態框 -->
-    <div
-      id="result-modal"
-      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 opacity-0 invisible transition-all duration-300"
-    >
-      <div
-        class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-all duration-300"
-      >
-        <div
-          class="bg-gradient-to-r from-primary to-primary/80 p-6 text-white flex justify-between items-center sticky top-0"
-        >
-          <h3 class="text-2xl font-bold">計算結果</h3>
-          <button
-            id="close-modal-btn"
-            class="text-white hover:text-white/80 transition-colors"
-          >
-            <i class="fa fa-times text-xl"></i>
-          </button>
-        </div>
-        <div class="p-6">
-          <div class="mb-8">
-            <h4 class="text-xl font-semibold mb-4">聚會信息</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-              <div class="flex items-center">
-                <i class="fa fa-tag text-primary mr-3 w-5 text-center"></i>
-                <span id="result-bill-name">週末聚餐</span>
-              </div>
-              <div class="flex items-center">
-                <i class="fa fa-calendar text-primary mr-3 w-5 text-center"></i>
-                <span id="result-bill-date">2024年5月25日</span>
-              </div>
-              <div class="flex items-center">
-                <i
-                  class="fa fa-map-marker text-primary mr-3 w-5 text-center"
-                ></i>
-                <span id="result-bill-location">麥當勞</span>
-              </div>
-              <div class="flex items-center">
-                <i class="fa fa-users text-primary mr-3 w-5 text-center"></i>
-                <span id="result-bill-participants">2位參與者</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="mb-8">
-            <h4 class="text-xl font-semibold mb-4">費用明細</h4>
-            <div class="overflow-x-auto">
-              <table class="w-full border-collapse">
-                <thead>
-                  <tr class="bg-light">
-                    <th
-                      class="py-3 px-4 text-left text-gray-700 font-semibold border-b"
-                    >
-                      項目
-                    </th>
-                    <th
-                      class="py-3 px-4 text-right text-gray-700 font-semibold border-b"
-                    >
-                      金額 (HKD)
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="result-items-table" class="text-gray-600">
-                  <!-- 结果将通过JS填充 -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="mb-8">
-            <h4 class="text-xl font-semibold mb-4">分攤結果</h4>
-            <div id="result-participants-container" class="space-y-4">
-              <!-- 结果将通过JS填充 -->
-            </div>
-          </div>
-
-          <div
-            class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 pt-6 border-t border-gray-200"
-          >
-            <button class="btn-secondary w-full sm:w-auto">
-              <i class="fa fa-print mr-2"></i> 列印報告
-            </button>
-            <div class="flex space-x-4 w-full sm:w-auto">
-              <button class="btn-secondary w-full sm:w-auto">
-                <i class="fa fa-share-alt mr-2"></i> 分享結果
-              </button>
-              <button id="save-result-btn" class="btn-primary w-full sm:w-auto">
-                <i class="fa fa-save mr-2"></i> 保存賬單
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script type="module">
-      // 移除所有 import 語句
-
-      // DOM元素
-      const billNameInput = document.getElementById("bill-name");
-      const billDateInput = document.getElementById("bill-date");
-      const billLocationInput = document.getElementById("bill-location");
-      const billTipInput = document.getElementById("bill-tip");
-      const participantsContainer = document.getElementById(
-        "participants-container"
-      );
-      const itemsContainer = document.getElementById("items-container");
-      const addPersonBtn = document.getElementById("add-person-btn");
-      const addItemBtn = document.getElementById("add-item-btn");
-      const calculateBtn = document.getElementById("calculate-btn");
-      const saveDraftBtn = document.getElementById("save-draft-btn");
-      const resultModal = document.getElementById("result-modal");
-      const closeModalBtn = document.getElementById("close-modal-btn");
-      const saveResultBtn = document.getElementById("save-result-btn");
-
-      // 初始化日期為今天
-      billDateInput.value = new Date().toISOString().split("T")[0];
-
-      // 當頁面加載時，重置服務器上的賬單狀態
-      fetch("/api/bill/reset", { method: "POST" })
-        .then((response) => response.json())
-        .then((data) => console.log(data.message))
-        .catch((error) => console.error("Error resetting bill:", error));
-
-      // --- 所有與數據相關的函數都需要修改 ---
-
-      // 更新賬單基本信息 (現在是異步操作)
-      async function updateBillInfo() {
-        const billInfo = {
-          name: billNameInput.value,
-          date: billDateInput.value,
-          location: billLocationInput.value,
-          tipPercentage: parseInt(billTipInput.value) || 0,
-        };
-        try {
-          const response = await fetch("/api/bill/info", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(billInfo),
-          });
-          if (!response.ok) {
-            throw new Error("更新賬單信息失敗");
-          }
-          const data = await response.json();
-          console.log(data.message);
-        } catch (error) {
-          console.error("Error updating bill info:", error);
-          alert("更新賬單信息時出錯，請查看控制台");
-        }
-      }
-
-      // 添加參與者
-      addPersonBtn.addEventListener("click", async () => {
-        const newParticipantInput = document.createElement("input");
-        newParticipantInput.type = "text";
-        newParticipantInput.placeholder = "參與者姓名";
-        newParticipantInput.className =
-          "flex-grow px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all duration-300";
-
-        // 創建新的參與者DOM元素
-        const newParticipant = document.createElement("div");
-        newParticipant.className =
-          "participant-item flex items-center p-4 bg-light rounded-lg transform transition-all duration-300 opacity-0 translate-y-2";
-        newParticipant.innerHTML = `
-            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold mr-4">
-                <i class="fa fa-user"></i>
-            </div>
-            <input type="text" placeholder="參與者姓名" 
-                class="flex-grow px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all duration-300">
-            <button class="remove-person-btn ml-4 text-gray-400 hover:text-red-500 transition-colors">
-                <i class="fa fa-times-circle text-xl"></i>
-            </button>
-        `;
-        participantsContainer.appendChild(newParticipant);
-
-        // 觸發動畫
-        setTimeout(() => {
-          newParticipant.classList.remove("opacity-0", "translate-y-2");
-        }, 10);
-
-        // 綁定刪除按鈕事件
-        newParticipant
-          .querySelector(".remove-person-btn")
-          .addEventListener("click", function () {
-            newParticipant.classList.add("opacity-0", "translate-y-2");
-            setTimeout(() => {
-              newParticipant.remove();
-            }, 300);
-          });
-
-        // 自動聚焦新輸入框
-        const inputField = newParticipant.querySelector("input");
-        inputField.focus();
-
-        // 當用戶輸入完成後（例如，按下回車或失去焦點），發送請求
-        inputField.addEventListener("blur", async () => {
-          const name = inputField.value.trim();
-          if (name) {
-            try {
-              const response = await fetch("/api/participant", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: name }),
-              });
-              if (!response.ok) {
-                throw new Error("添加參與者失敗");
-              }
-              const participant = await response.json();
-              console.log("參與者已添加:", participant);
-              // 可以將返回的ID存儲在DOM元素上，用於後續操作
-              newParticipant.dataset.participantId = participant.id;
-            } catch (error) {
-              console.error("Error adding participant:", error);
-              alert("添加參與者時出錯，請查看控制台");
-            }
-          }
-        });
-      });
-
-      // 計算按鈕點擊事件
-      calculateBtn.addEventListener("click", async function () {
-        // 首先保存所有表單數據到服務器
-        await updateBillInfo();
-
-        // 收集並上傳項目信息
-        const items = Array.from(itemsContainer.querySelectorAll(".item-card"))
-          .map((item) => {
-            return {
-              name: item.querySelector(".item-name").value.trim(),
-              amount: parseFloat(item.querySelector(".item-amount").value) || 0,
-              isShared: item.querySelector(".item-is-shared").checked,
-              participantIds: Array.from(
-                item.querySelectorAll(".person-tag")
-              ).map((tag) => tag.dataset.participantId),
-            };
-          })
-          .filter(
-            (item) =>
-              item.name && item.amount > 0 && item.participantIds.length > 0
-          );
-
-        // 批量上傳項目 (在實際應用中，可能需要一個專門的批量API)
-        for (const item of items) {
-          try {
-            await fetch("/api/item", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(item),
-            });
-          } catch (error) {
-            console.error("Error adding item:", error);
-            alert("上傳項目時出錯，請查看控制台");
-            return; // 中斷上傳
-          }
-        }
-
-        // 調用計算API
-        try {
-          const response = await fetch("/api/calculate");
-          if (!response.ok) {
-            throw new Error("計算賬單失敗");
-          }
-          const { bill, results } = await response.json();
-
-          // 使用返回的 results 來更新模態框...
-          // (這部分代碼與之前類似，但使用從API獲得的 'bill' 和 'results' 對象)
-          console.log("計算結果:", results);
-          // ... 更新UI的代碼 ...
-
-          // 最後顯示模態框
-          resultModal.classList.remove("opacity-0", "invisible");
-          resultModal.querySelector(".bg-white").classList.remove("scale-95");
-          resultModal.querySelector(".bg-white").classList.add("scale-100");
-          document.body.style.overflow = "hidden";
-        } catch (error) {
-          console.error("Error calculating bill:", error);
-          alert("計算賬單時出錯，請查看控制台");
-        }
-      });
-
-      // ... 其他按鈕的事件監聽器也需要類似地修改，使用 fetch 與後端交互 ...
-
-      // 初始化時添加一個項目輸入框
-      setTimeout(() => {
-        addItemBtn.click();
-      }, 100);
-    </script>
+    <script></script>
   </body>
 </html>
