@@ -22,7 +22,7 @@ export class BillCalculator {
     // 2. 计算每个项目的金额，并分摊给相应的参与者
     bill.items.forEach((item) => {
       const participantsInItem = bill.participants.filter((p) =>
-        item.participantIds.includes(p.id)
+        item.participantsIds.includes(p.id)
       );
       const splitAmount = item.amount / participantsInItem.length;
 
