@@ -21,6 +21,18 @@ export class DataManager {
     };
   }
 
+  reset() {
+    this.currentBill = {
+      id: generateId(),
+      name: "",
+      date: new Date().toISOString().split("T")[0],
+      location: "",
+      tipPercentage: 0,
+      participants: [],
+      items: [],
+    };
+  }
+
   // --- 账单信息操作 ---
   updateBillInfo(
     name: string,
@@ -47,7 +59,7 @@ export class DataManager {
     );
     // 同时从项目中移除该参与者
     this.currentBill.items.forEach((item) => {
-      item.participantIds = item.participantIds.filter((pId) => pId !== id);
+      item.participantsIds = item.participantsIds.filter((pId) => pId !== id);
     });
   }
 
@@ -60,10 +72,10 @@ export class DataManager {
   ): Item {
     const newItem: Item = {
       id: generateId(),
-      name,
-      amount,
-      isShared,
-      participantIds,
+      name: name,
+      amount: amount,
+      isShared: isShared,
+      participantsIds: participantIds,
     };
     this.currentBill.items.push(newItem);
     return newItem;
@@ -76,7 +88,7 @@ export class DataManager {
   updateItemParticipants(itemId: string, participantIds: string[]): void {
     const item = this.currentBill.items.find((i) => i.id === itemId);
     if (item) {
-      item.participantIds = participantIds;
+      item.participantsIds = participantIds;
     }
   }
 

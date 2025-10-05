@@ -3,8 +3,8 @@
     "target": "ES6",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "outDir": "./dist",
-    "rootDir": "./server",
+    "rootDir": "./", // 或者將 "rootDir" 設置為項目根目錄
+    "outDir": "./public/js",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
