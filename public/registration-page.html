@@ -12,46 +12,7 @@
       href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
       rel="stylesheet"
     />
-    <!-- 使用Tailwind中的顏色和字體 -->
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#4F46E5", // 靛藍色
-              secondary: "#EC4899", // 粉紅色
-              accent: "#F59E0B", // 琥珀色
-              light: "#F3F4F6",
-              dark: "#1F2937",
-            },
-            fontFamily: {
-              sans: ["Inter", "system-ui", "sans-serif"],
-            },
-          },
-        },
-      };
-    </script>
 
-        <!-- 自定義系列工具類 -->
-    <style type="text/tailwindcss">
-      @layer utilities {
-        .content-auto {
-          content-visibility: auto;
-        }
-        .text-shadow {
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .card-hover {
-          @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
-        }
-        .btn-primary {
-          @apply bg-accent text-white font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg hover:bg-amber-600 transition-all duration-300 transform hover:-translate-y-0.5;
-        }
-        .btn-secondary {
-          @apply bg-white text-primary border border-primary font-semibold py-3 px-6 rounded-full shadow-sm hover:shadow-md hover:bg-primary/5 transition-all duration-300;
-        }
-      }
-    </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
 
